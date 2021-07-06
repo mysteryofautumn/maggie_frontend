@@ -1,32 +1,24 @@
 <template>
-  <div>
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="Amount Received">
-        <el-input v-model="form.received"></el-input>
-      </el-form-item>
-
-      <table border="1">
-        <tr>
-          <th>Item No.</th>
-          <th>Amount left</th>
-          <th><el-button circle>+</el-button></th>
-        </tr>
-        <tr>
-          <td>
-            <el-input v-model="form.no"></el-input>
-          </td>
-          <td>
-            <el-input v-model="form.amount"></el-input>
-          </td>
-          <td>
-            <el-button type="danger" icon="el-icon-delete" circle></el-button>
-          </td>
-        </tr>
-      </table>
-      <el-form-item><el-button type="success" round>Submit</el-button> </el-form-item>
-    </el-form>
-
-
+  <div style="margin:0 auto;text-align:center">
+    <el-table :data="tableData" border  width="100%">
+      <el-table-column label="Item No." width="400">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.no"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column label="Amount left" width="400">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.amount" type="number"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column label=""  :render-header="renderHeader">
+        <template slot-scope="scope">
+          <el-button type="danger" @click="handleDelete(scope.$index)" icon="el-icon-delete"
+                     circle></el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-button type="success" round>Submit</el-button>
   </div>
 </template>
 
@@ -35,12 +27,28 @@ export default {
   name: "ValueRecord",
   data() {
     return {
-      form: {
-        received: '',
-        no: '',
-        amount:''
-      }
+      tableData: [{}]
     }
+  },
+  methods: {
+    AddListRow() {
+      this.tableData.push({
+        amount: '',
+        no: ''
+      });
+    },
+    renderHeader() {
+      return (
+          <el-button icon="el-icon-plus"
+                     onClick={() => this.AddListRow()}
+                     circle></el-button>
+      )
+    },
+    handleDelete(index) {
+      this.tableData.splice(index, 1);
+    },
+
+
   }
 }
 </script>
