@@ -14,11 +14,11 @@
     </el-table-column>
     <el-table-column
         prop="received"
-        label="Received value"
+        label="Received revenue"
         width="180">
     </el-table-column>
     <el-table-column
-        prop="expected"
+        prop="cost"
         label="Value of the product left"
         width="200">
     </el-table-column>
