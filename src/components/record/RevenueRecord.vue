@@ -1,24 +1,24 @@
 <template>
   <el-table
       :data="tableData"
-      style="width: 100%">
+      style="width: 100%" empty-text="no data">
     <el-table-column
-        prop="no"
-        label="Record No."
+        prop="id"
+        label="Record ID."
         width="180">
     </el-table-column>
     <el-table-column
-        prop="expected"
+        prop="expected_revenue"
         label="Expected revenue"
         width="180">
     </el-table-column>
     <el-table-column
-        prop="received"
-        label="Received revenue"
+        prop="actual_revenue"
+        label="Actual revenue"
         width="180">
     </el-table-column>
     <el-table-column
-        prop="cost"
+        prop="remained_value"
         label="Value of the product left"
         width="200">
     </el-table-column>
@@ -31,23 +31,41 @@
 </template>
 
 <script>
+import api from "../../api"
 export default {
+  data(){
+    return{
+      tableData:[],
+      form:{
+        id:'',
+        expected_revenue:'',
+        actual_revenue:'',
+        remained_value:'',
+        difference:''
+
+      }
+
+      }
+  },
+  mounted() {
+    this.getRevenue()
+  },
   methods: {
     handleClick(row) {
       console.log(row);
-    }
-  },
-
-  data() {
-    return {
-      tableData: [{
-        no:'1',
-        cost: '￥10',
-        time: '6/10',
-      }]
+    },
+    getRevenue(){
+      api.getRevenue().then(response => {
+        if (response.status === 200) {
+          console.log(response.data)
+          this.tableData = response.data.records
+        }
+      }).catch(error => {
+        console.log('action failed:' + error)
+      })
+    },
     }
   }
-}
 </script>
 
 <style scoped>

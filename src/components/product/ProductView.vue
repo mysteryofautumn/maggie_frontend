@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-table
       :data="tableData"
       style="width: 100%">
@@ -51,17 +52,106 @@
       </template>
     </el-table-column>
   </el-table>
+    <el-dialog title = "edit" :visible.sync="dialogFormVisible">
+      <el-form ref="form" :model="form" :rules='rules' label-width="150px">
+        <el-form-item label="Product Id" prop="id">
+          <el-input v-model="form.id" disabled></el-input>
+        </el-form-item>
+      <el-form-item label="Product Name" prop="name">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+      <el-form-item label="Purchasing Price" prop="purchasing_price">
+        <el-input v-model="form.purchasing_price" type="number"></el-input>
+      </el-form-item>
+      <el-form-item label="Selling Price" prop="selling_price">
+        <el-input v-model="form.selling_price" type="number"></el-input>
+      </el-form-item>
+      <el-form-item label="Stock amount" prop = "stock_amount">
+        <el-input v-model="form.stock_amount" type="number"></el-input>
+      </el-form-item>
+      <el-form-item label="Shelf amount" prop = "shelf_amount">
+        <el-input v-model="form.shelf_amount" type="number"></el-input>
+      </el-form-item>
+      <el-form-item label="Restock Level" prop = "restock">
+        <el-input v-model="form.restock" type="number"></el-input>
+      </el-form-item>
+      <el-form-item label="Additional Comment">
+        <el-input v-model="form.comment" type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="dialogSubmit">Submit</el-button>
+        <el-button @click = "dialogFormVisible = false" >Cancel</el-button>
+      </el-form-item>
+    </el-form>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 import api from "../../api";
 
 export default {
+  name:'ProductView',
   data() {
     return {
-      tableData: []
+      tableData: [],
+      dialogFormVisible: false,
+      form: {
+        name: '',
+        purchasing_price: '',
+        selling_price: '',
+        stock_amount: '',
+        shelf_amount: '',
+        restock: '',
+        comment: '',
+      },
+      rules: {
+        name: [
+          {required: true, message: 'required input', trigger: 'blur'}
+        ],
+        purchasing_price: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {
+            pattern: /^([0-9]|[1-4][0-9]|50)$/,
+            message: "invalid input: out of range, should be between 0 and 50",
+            trigger: 'blur'
+          },
+        ],
+        selling_price: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {
+            pattern: /^([0-9]|[1-4][0-9]|50)$/,
+            message: "invalid input: out of range, should be between 0 and 50",
+            trigger: 'blur'
+          },
+        ],
+        stock_amount: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {
+            pattern: /^([0-9]|[1-4][0-9]|50)$/,
+            message: "invalid input: out of range, should be between 0 and 50",
+            trigger: 'blur'
+          },
+        ],
+        shelf_amount: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {
+            pattern: /^([0-9]|[1-4][0-9]|50)$/,
+            message: "invalid input: out of range, should be between 0 and 50",
+            trigger: 'blur'
+          },
+        ],
+        restock: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {
+            pattern: /^([0-9]|[1-4][0-9]|50)$/,
+            message: "invalid input: out of range, should be between 0 and 50",
+            trigger: 'blur'
+          }
+        ]
+      }
     }
-  },
+ },
   mounted() {
     this.getItems()
   },
@@ -95,8 +185,60 @@ export default {
       }).catch(error => {
         this.$message.error('action failed:' + error)
       })
+      this.getItems()
+    },
+    handleEdit(id) {
+      console.log('edit!');
+      this.form.id = id
+      this.dialogFormVisible = true
+      api.getItemById({
+        item_id: id,
+      }).then(response => {
+        if (response.status === 200) {
+          console.log('success')
+          this.form.name = response.data.name
+          this.form.purchasing_price = response.data.purchasing_price
+          this.form.selling_price = response.data.selling_price
+          this.form.stock_amount = response.data.stock_amount
+          this.form.shelf_amount = response.data.shelf_amount
+          this.form.comment = response.data.comment
+          this.form.restock = response.data.restock
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+
+
+    },
+    dialogSubmit() {
+      api.editItem({
+        item_id: this.form.id,
+        name: this.form.name,
+        purchasing_price: this.form.purchasing_price,
+        selling_price: this.form.selling_price,
+        stock_amount: this.form.stock_amount,
+        shelf_amount: this.form.shelf_amount,
+        restock: this.form.restock,
+        comment: this.form.comment
+      }).then(response => {
+        if (response.status === 200) {
+          if (response.data.code === 1) {
+            console.log('success')
+            this.$message.success('action complete')
+          } else {
+            this.$message.error('Invalid input. Input cannot be blank')
+          }
+        }
+      }).catch(error => {
+        this.$message.error('action failed:' + error)
+      })
+      this.dialogFormVisible = false
+      this.getItems()
     }
+
+
   }
+
 }
 </script>
 

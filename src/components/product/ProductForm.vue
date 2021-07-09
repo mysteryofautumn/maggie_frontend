@@ -1,25 +1,25 @@
 <template>
-  <el-form ref="form" :model="form" label-width="80px">
-    <el-form-item label="Product Name">
+  <el-form ref="form" :model="form" :rules='rules' label-width="150px">
+    <el-form-item label="Product Name" prop="name">
       <el-input v-model="form.name"></el-input>
     </el-form-item>
-    <el-form-item label="Purchasing Price">
-      <el-input v-model="form.purchasing_price"></el-input>
+    <el-form-item label="Purchasing Price" prop="purchasing_price">
+      <el-input v-model="form.purchasing_price" type="number"></el-input>
     </el-form-item>
-    <el-form-item label="Selling Price">
-      <el-input v-model="form.selling_price"></el-input>
+    <el-form-item label="Selling Price" prop="selling_price">
+      <el-input v-model="form.selling_price" type="number"></el-input>
     </el-form-item>
-    <el-form-item label="Stock amount">
-      <el-input v-model="form.stock_amount"></el-input>
+    <el-form-item label="Stock amount" prop = "stock_amount">
+      <el-input v-model="form.stock_amount" type="number"></el-input>
     </el-form-item>
-    <el-form-item label="Shelf amount">
-      <el-input v-model="form.shelf_amount"></el-input>
+    <el-form-item label="Shelf amount" prop = "shelf_amount">
+      <el-input v-model="form.shelf_amount" type="number"></el-input>
     </el-form-item>
-    <el-form-item label="Restock Level">
-      <el-input v-model="form.restock"></el-input>
+    <el-form-item label="Restock Level" prop = "restock">
+      <el-input v-model="form.restock" type="number"></el-input>
     </el-form-item>
     <el-form-item label="Additional Comment">
-      <el-input type="textarea" v-model="form.comment"></el-input>
+      <el-input v-model="form.comment" type="textarea"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">Submit</el-button>
@@ -31,6 +31,7 @@
 
 <script>
 import api from '../../api'
+
 export default {
   data() {
     return {
@@ -39,9 +40,34 @@ export default {
         purchasing_price: '',
         selling_price: '',
         stock_amount: '',
-        shelf_amount:'',
+        shelf_amount: '',
         restock: '',
         comment: '',
+      },
+      rules: {
+        name: [
+          {required: true, message: 'required input', trigger: 'blur'}
+        ],
+        purchasing_price: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {pattern:/^([0-9]|[1-4][0-9]|50)$/, message: "invalid input: out of range, should be between 0 and 50", trigger: 'blur'},
+        ],
+        selling_price: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {pattern:/^([0-9]|[1-4][0-9]|50)$/, message: "invalid input: out of range, should be between 0 and 50", trigger: 'blur'},
+        ],
+        stock_amount: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {pattern:/^([0-9]|[1-4][0-9]|50)$/, message: "invalid input: out of range, should be between 0 and 50", trigger: 'blur'},
+        ],
+        shelf_amount: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {pattern:/^([0-9]|[1-4][0-9]|50)$/, message: "invalid input: out of range, should be between 0 and 50", trigger: 'blur'},
+        ],
+        restock: [
+          {required: true, message: 'invalid input: please input a number', trigger: 'blur'},
+          {pattern:/^([0-9]|[1-4][0-9]|50)$/, message: "invalid input: out of range, should be between 0 and 50", trigger: 'blur'},
+        ],
       }
     }
   },
@@ -58,11 +84,15 @@ export default {
         comment: this.form.comment
       }).then(response => {
         if (response.status === 200) {
-          console.log('success')
-          this.$message.success('action complete')
+          if (response.data.code === 1) {
+            console.log('success')
+            this.$message.success('action complete')
+          } else {
+            this.$message.error('Invalid input. Input cannot be blank')
+          }
         }
       }).catch(error => {
-        this.$message.error('action failed:' + error )
+        this.$message.error('action failed:' + error)
       })
     }
   }

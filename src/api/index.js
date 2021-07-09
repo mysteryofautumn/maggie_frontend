@@ -33,10 +33,61 @@ function editItem(params) {
     return post('./editItem/', params)
 }
 
+function authentication(params){
+    return post ('./authentication/', params)
+}
+
+function getItemById(params){
+    return post('./getItemById/', params)
+}
+
+function addInstock(params) {
+    return post('./addInstock/', params)
+}
+
+function getNewestInorderId(params) {
+    return get('./getNewestInorderId/', params)
+}
+
+function getInstock(params) {
+    return get('./getInstock/', params)
+}
+
+function addOutstock(params) {
+    return post('./addOutstock/', params)
+}
+
+function getNewestOutorderId(params) {
+    return get('./getNewestOutorderId/', params)
+}
+
+function addRevenue(params){
+    return post('./addRevenue/', params)
+}
+
+function getRevenue(params){
+    return get('./getRevenue/', params)
+}
+
+function getNewestRevenueId(params){
+    return get('./getNewestRevenueId/', params)
+}
+
 export default {
     getItems,
     addItem,
     deleteItem,
-    editItem
+    editItem,
+    authentication,
+    getItemById,
+    addInstock,
+    getNewestInorderId,
+    getInstock,
+    addOutstock,
+    getNewestOutorderId,
+    addRevenue,
+    getRevenue,
+    getNewestRevenueId
+
 }
 

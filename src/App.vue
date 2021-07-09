@@ -1,29 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+<!--    <img alt="Vue logo" src="./assets/logo.png" width="100%" height="40%">-->
+    <router-view></router-view>
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
 <!--    <ValueForm/>-->
+<!--&lt;!&ndash;    <RevenueRecord/>&ndash;&gt;-->
+<!--    <Login/>-->
+<!--    <ProductForm/>-->
+<!--    <ProductView/>-->
+<!--    <InstockOrder/>-->
+<!--    <InstockView/>-->
+<!--    <OutstockOrder/>-->
 <!--    <RevenueRecord/>-->
-    <ProductView/>
-    <ProductForm/>
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 // import ValueForm from "./components/record/ValueForm";
+// import ProductForm from './components/product/ProductForm'
+// import ProductView from './components/product/ProductView'
+// import Login from "./components/login/Login";
+// import OutstockOrder from "./components/order/OutstockOrder"
+// import InstockOrder from "./components/order/InstockOrder";
+// import InstockView from "./components/record/InstockView";
 // import RevenueRecord from "./components/record/RevenueRecord";
+// import Navigator from "./views/Navigator";
 
-import ProductView from "./components/product/ProductView";
-import ProductForm from "./components/product/ProductForm";
 export default {
   name: 'App',
   components: {
-    ProductView,
-    // RevenueRecord,
+    // Navigator,
+    // InstockView,
+    // Login,
     // ValueForm,
-    ProductForm
-    // HelloWorld
+    // // HelloWorld
+    // ProductView,
+    // ProductForm,
+    // OutstockOrder,
+    // InstockOrder,
+    // RevenueRecord
   }
 }
 </script>
